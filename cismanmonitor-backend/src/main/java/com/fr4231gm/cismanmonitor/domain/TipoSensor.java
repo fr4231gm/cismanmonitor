@@ -1,0 +1,16 @@
+package com.fr4231gm.cismanmonitor.domain;
+
+public enum TipoSensor {
+    TEMPERATURA,
+    HUMEDAD_SUELO,
+    HUMEDAD_RELATIVA,
+    PLUVIOMETRO,
+    SENSOR_MOVIMIENTO,
+    ENOLOGIA,
+    LDR,
+    NIVEL_AGUA,
+    ACIDEZ_AGUA,
+    CONDUCTIVIDAD_SUELO,
+    HUMECTACION_HOJA,
+    PRESION_BAROMETRICA
+}
