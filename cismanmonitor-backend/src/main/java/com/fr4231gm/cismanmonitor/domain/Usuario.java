@@ -1,11 +1,19 @@
 package com.fr4231gm.cismanmonitor.domain;
 
 import jakarta.persistence.*;
-
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "registro_sensores")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Usuario {
 
     @Id
