@@ -1,0 +1,40 @@
+.irrigation-container {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 2rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.irrigation-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.irrigation-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.irrigation-table th,
+.irrigation-table td {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.irrigation-table th {
+  background-color: #f5f5f5;
+}
+
+.activo {
+  color: green;
+  font-weight: bold;
+}
+
+.inactivo {
+  color: red;
+  font-weight: bold;
+}

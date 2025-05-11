@@ -1,0 +1,47 @@
+.notification-form-container {
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 2rem;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.notification-form-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.notification-form label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.notification-form input[type="text"],
+.notification-form select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.checkbox-block {
+  margin-top: 1rem;
+}
+
+.notification-form button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1.5rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.notification-form button:hover {
+  background-color: #218838;
+}
