@@ -2,28 +2,32 @@ import React, { useState } from 'react';
 import './Login.css';
 
 function Login() {
-  const [email, setEmail] = useState('');
+  const [identificador, setIdentificador] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí irá la llamada al backend
-    console.log('Iniciando sesión con:', { email, password });
+    console.log('Login con:', { identificador, password });
   };
 
   return (
     <div className="login-container">
-      <h2>Iniciar sesión</h2>
+      <h1 className="app-title">CismanMonitor</h1>
+      <p className="welcome-message">
+        Bienvenido a CismanMonitor, el sistema inteligente de monitorización agrícola.
+      </p>
+
       <form onSubmit={handleSubmit} className="login-form">
         <label>
-          Correo electrónico:
+          Identificador:
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={identificador}
+            onChange={(e) => setIdentificador(e.target.value)}
             required
           />
         </label>
+
         <label>
           Contraseña:
           <input
@@ -33,8 +37,14 @@ function Login() {
             required
           />
         </label>
+
         <button type="submit">Entrar</button>
       </form>
+
+      <div className="login-links">
+        <a href="/reset-clave-maestra">¿Ha olvidado su contraseña?</a>
+        <a href="/register">Registrarse</a>
+      </div>
     </div>
   );
 }
