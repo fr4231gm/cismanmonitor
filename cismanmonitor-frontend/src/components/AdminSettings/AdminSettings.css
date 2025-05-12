@@ -1,47 +1,66 @@
-.admin-settings-container {
-  max-width: 600px;
-  margin: 60px auto;
+.admin-wrapper {
+  max-width: 1100px;
+  margin: 40px auto;
   padding: 2rem;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.admin-settings-container h2 {
-  text-align: center;
+.sensor-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  background-color: #eef5ff;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
   margin-bottom: 2rem;
 }
 
-.admin-settings-form label {
-  display: block;
-  margin-bottom: 1rem;
+.admin-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+  margin-bottom: 2rem;
 }
 
-.admin-settings-form input[type="email"],
-.admin-settings-form input[type="number"] {
+.admin-box {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 1.5rem;
   width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.25rem;
-  border: 1px solid #aaa;
-  border-radius: 4px;
+  max-width: 320px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.checkbox-block {
-  margin-top: 1rem;
+.admin-box:hover {
+  transform: scale(1.03);
+  background-color: #e6f0ff;
 }
 
-.admin-settings-form button {
-  width: 100%;
-  padding: 0.75rem;
-  margin-top: 1.5rem;
-  background-color: #007bff;
+.admin-box h4 {
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+}
+
+.admin-box p {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.volver {
+  text-align: center;
+}
+
+.volver button {
+  padding: 0.75rem 1.5rem;
+  background-color: #6c757d;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-}
-
-.admin-settings-form button:hover {
-  background-color: #0056b3;
 }

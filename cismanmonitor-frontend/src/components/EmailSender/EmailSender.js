@@ -2,62 +2,135 @@ import React, { useState } from 'react';
 import './EmailSender.css';
 
 function EmailSender() {
-  const [formData, setFormData] = useState({
-    destinatario: '',
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [correo, setCorreo] = useState({
     asunto: '',
-    mensaje: ''
+    destinatario: 'Personalizado',
+    nombre: '',
+    emails: '',
+    cuerpo: ''
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Enviando correo:', formData);
-    // Aquí puedes integrar con el backend
-  };
+  const correos = [
+    {
+      asunto: 'Mantenimiento programado del sistema',
+      fecha: '03/02/2025 16:24',
+      destinatarios: 'Todos'
+    },
+    {
+      asunto: 'Corte de suministro de agua',
+      fecha: '07/02/2025 12:22',
+      destinatarios: 'Todos'
+    },
+    {
+      asunto: 'Aviso de mal riego',
+      fecha: '20/02/2025 14:55',
+      destinatarios: 'Personalizado'
+    },
+    {
+      asunto: 'Reseetame la contraseña por favor',
+      fecha: '28/02/2025 20:01',
+      destinatarios: 'Administración'
+    }
+  ];
 
   return (
-    <div className="email-sender-container">
-      <h2>Envío de Correos</h2>
-      <form onSubmit={handleSubmit} className="email-sender-form">
-        <label>
-          Para:
-          <input
-            type="email"
-            name="destinatario"
-            value={formData.destinatario}
-            onChange={handleChange}
-            required
-          />
-        </label>
+    <div className="admin-mails-wrapper">
+      <div className="sensor-bar">
+        <span>Accediendo como: <strong>Francisco</strong></span>
+        <span>Estado del riego: Desactivado</span>
+        <span>Tiempo: Despejado</span>
+        <span>Temperatura actual: 23°C</span>
+        <span>Humedad relativa: 27%</span>
+      </div>
 
-        <label>
-          Asunto:
+      {!mostrarFormulario ? (
+        <>
+          <div className="admin-mails-filtros">
+            <input type="text" placeholder="Asunto" />
+            <input type="date" />
+            <input type="date" />
+          </div>
+
+          <div className="admin-mails-crear-btn">
+            <button onClick={() => setMostrarFormulario(true)}>Crear nuevo</button>
+          </div>
+
+          <table className="admin-mails-tabla">
+            <thead>
+              <tr>
+                <th>Asunto</th>
+                <th>Fecha</th>
+                <th>Destinatarios</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {correos.map((c, i) => (
+                <tr key={i}>
+                  <td>{c.asunto}</td>
+                  <td>{c.fecha}</td>
+                  <td>{c.destinatarios}</td>
+                  <td><button className="ver-link">Ver</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <div className="admin-mails-volver">
+            <button className="volver">← Volver al menú de administración</button>
+          </div>
+        </>
+      ) : (
+        <div className="admin-mails-formulario">
+          <h3>Nuevo correo</h3>
+
+          <label>Asunto:</label>
           <input
             type="text"
-            name="asunto"
-            value={formData.asunto}
-            onChange={handleChange}
-            required
+            value={correo.asunto}
+            onChange={(e) => setCorreo({ ...correo, asunto: e.target.value })}
           />
-        </label>
 
-        <label>
-          Mensaje:
+          <label>Destinatarios:</label>
+          <select
+            value={correo.destinatario}
+            onChange={(e) => setCorreo({ ...correo, destinatario: e.target.value })}
+          >
+            <option>Todos</option>
+            <option>Administración</option>
+            <option>Personalizado</option>
+          </select>
+
+          {correo.destinatario === 'Personalizado' && (
+            <input
+              type="text"
+              placeholder="Nombre"
+              value={correo.nombre}
+              onChange={(e) => setCorreo({ ...correo, nombre: e.target.value })}
+            />
+          )}
+
+          <input
+            type="text"
+            placeholder="frangomez@cisman.es;pedroalberto@gmail.com"
+            value={correo.emails}
+            onChange={(e) => setCorreo({ ...correo, emails: e.target.value })}
+          />
+
+          <label>Cuerpo:</label>
           <textarea
-            name="mensaje"
-            value={formData.mensaje}
-            onChange={handleChange}
-            rows="6"
-            required
-          ></textarea>
-        </label>
+            rows="5"
+            value={correo.cuerpo}
+            onChange={(e) => setCorreo({ ...correo, cuerpo: e.target.value })}
+          />
 
-        <button type="submit">Enviar</button>
-      </form>
+          <div className="admin-mails-botones-form">
+            <button onClick={() => setMostrarFormulario(false)}>Cancelar</button>
+            <button onClick={() => alert('Correo enviado')}>Enviar</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
