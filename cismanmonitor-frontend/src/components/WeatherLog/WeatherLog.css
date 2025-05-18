@@ -1,0 +1,30 @@
+.weather-log-container {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.weather-log-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.weather-log-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.weather-log-table th,
+.weather-log-table td {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.weather-log-table th {
+  background-color: #f0f0f0;
+}
