@@ -16,13 +16,41 @@ function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (formData.password !== formData.confirmarPassword) {
       alert('Las contraseñas no coinciden');
       return;
     }
-    console.log('Registro enviado:', formData);
+
+    try {
+      const response = await fetch('http://localhost:8080/api/registro', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nombre: formData.nombre,
+          apellidos: formData.apellidos,
+          identificador: formData.codigo,
+          email: formData.correo,
+          telefono: formData.telefono,
+          contraseña: formData.password,
+        }),
+      });
+
+      if (response.ok) {
+        const mensaje = await response.text();
+        alert('✅ ' + mensaje);
+        // Aquí podrías redirigir al login si quieres
+      } else {
+        alert('❌ Error al registrar. Código: ' + response.status);
+      }
+    } catch (error) {
+      console.error('Error al conectar:', error);
+      alert('❌ Error al conectar con el servidor.');
+    }
   };
 
   return (
