@@ -1,13 +1,44 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 function Login() {
   const [identificador, setIdentificador] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login con:', { identificador, password });
+
+    try {
+      const response = await fetch('http://localhost:8080/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          identificador,
+          password
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+
+        // Guardar token
+        localStorage.setItem('token', data.token);
+
+        // Redirigir al menú
+        navigate('/menu');
+      } else {
+        const errorMsg = await response.text();
+        setError('Error al iniciar sesión: ' + errorMsg);
+      }
+    } catch (err) {
+      console.error('Error de red o servidor:', err);
+      setError('No se pudo conectar con el servidor.');
+    }
   };
 
   return (
@@ -40,6 +71,8 @@ function Login() {
 
         <button type="submit">Entrar</button>
       </form>
+
+      {error && <p className="error-message">{error}</p>}
 
       <div className="login-links">
         <a href="/reset-clave-maestra">¿Ha olvidado su contraseña?</a>

@@ -1,14 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './MainMenu.css';
 
+// Función para decodificar el payload de un token JWT
+function parseJwt(token) {
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch (e) {
+    return null;
+  }
+}
+
 function MainMenu() {
-  const usuario = 'Francisco';
-  const esAdmin = true;
+  const navigate = useNavigate();
+  const [usuario, setUsuario] = useState('Usuario');
+  const [esAdmin, setEsAdmin] = useState(false); // por defecto false
 
   const estadoRiego = 'Desactivado';
   const tiempo = 'Despejado';
   const temperatura = '23°C';
   const humedad = '27%';
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/');
+      return;
+    }
+
+    const payload = parseJwt(token);
+    if (payload) {
+      setUsuario(payload.sub); // el identificador va como 'sub' por convención JWT
+      setEsAdmin(payload.rol === 'admin'); // si añades rol en el token, opcional
+    }
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
 
   return (
     <div className="mainmenu-wrapper">
@@ -46,7 +76,7 @@ function MainMenu() {
           <p>Accede a información meteorológica actual y en tiempo real del cultivo</p>
         </div>
 
-        <div className="menu-card" onClick={() => alert('Cerrar sesión')}>
+        <div className="menu-card" onClick={handleLogout}>
           <h3>Cerrar sesión</h3>
         </div>
       </div>

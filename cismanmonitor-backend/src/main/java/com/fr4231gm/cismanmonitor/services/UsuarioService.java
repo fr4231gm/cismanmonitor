@@ -6,6 +6,7 @@ import com.fr4231gm.cismanmonitor.repositories.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -22,5 +23,9 @@ public class UsuarioService {
 
     public Usuario save(Usuario usuario) {
         return usuarioRepository.save(usuario);
+    }
+
+    public Optional<Usuario> findByIdentificador(String identificador) {
+        return usuarioRepository.findByCodigoUsuario(identificador);
     }
 }

@@ -17,28 +17,32 @@ import EmailSender from './components/EmailSender/EmailSender';
 import UserManagement from './components/UserManagement/UserManagement';
 import UserActionHistory from './components/UserActionHistory/UserActionHistory';
 import ResetMasterPassword from './components/ResetMasterPassword/ResetMasterPassword';
+import ProtectedRoute from './components/Security/ProtectedRoute';
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Rutas públicas */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/menu" element={<MainMenu />} />
-        <Route path="/sensores" element={<SensorSummary />} />
-        <Route path="/vigilancia" element={<SurveillanceSystem />} />
-        <Route path="/regadio" element={<IrrigationSystem />} />
-        <Route path="/automatizacion" element={<IrrigationAutomationForm />} />
-        <Route path="/meteorologia" element={<WeatherModule />} />
-        <Route path="/registro-meteorologico" element={<WeatherLog />} />
-        <Route path="/detalle-horas" element={<HourlyDetail />} />
-        <Route path="/notificaciones" element={<NotificationSettings />} />
-        <Route path="/nueva-notificacion" element={<NotificationForm />} />
-        <Route path="/config-admin" element={<AdminSettings />} />
-        <Route path="/enviar-correo" element={<EmailSender />} />
-        <Route path="/usuarios" element={<UserManagement />} />
-        <Route path="/historial-usuarios" element={<UserActionHistory />} />
         <Route path="/reset-clave-maestra" element={<ResetMasterPassword />} />
+
+        {/* Rutas protegidas */}
+        <Route path="/menu" element={<ProtectedRoute><MainMenu /></ProtectedRoute>} />
+        <Route path="/sensores" element={<ProtectedRoute><SensorSummary /></ProtectedRoute>} />
+        <Route path="/vigilancia" element={<ProtectedRoute><SurveillanceSystem /></ProtectedRoute>} />
+        <Route path="/regadio" element={<ProtectedRoute><IrrigationSystem /></ProtectedRoute>} />
+        <Route path="/automatizacion" element={<ProtectedRoute><IrrigationAutomationForm /></ProtectedRoute>} />
+        <Route path="/meteorologia" element={<ProtectedRoute><WeatherModule /></ProtectedRoute>} />
+        <Route path="/registro-meteorologico" element={<ProtectedRoute><WeatherLog /></ProtectedRoute>} />
+        <Route path="/detalle-horas" element={<ProtectedRoute><HourlyDetail /></ProtectedRoute>} />
+        <Route path="/notificaciones" element={<ProtectedRoute><NotificationSettings /></ProtectedRoute>} />
+        <Route path="/nueva-notificacion" element={<ProtectedRoute><NotificationForm /></ProtectedRoute>} />
+        <Route path="/config-admin" element={<ProtectedRoute><AdminSettings /></ProtectedRoute>} />
+        <Route path="/enviar-correo" element={<ProtectedRoute><EmailSender /></ProtectedRoute>} />
+        <Route path="/usuarios" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
+        <Route path="/historial-usuarios" element={<ProtectedRoute><UserActionHistory /></ProtectedRoute>} />
       </Routes>
     </Router>
   );
