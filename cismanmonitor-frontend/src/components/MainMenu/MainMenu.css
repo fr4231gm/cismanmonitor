@@ -30,6 +30,12 @@
   background-color: #ffffff;
   border: 1px solid #ccc;
   padding: 1.5rem;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;

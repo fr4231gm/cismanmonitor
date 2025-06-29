@@ -1,6 +1,9 @@
 package com.fr4231gm.cismanmonitor.controllers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,20 +18,24 @@ import com.fr4231gm.cismanmonitor.services.UsuarioService;
 @RequestMapping("/api")
 public class RegisterController {
 	
+	 private static final Logger logger = LogManager.getLogger(LoginController.class);
+	
 	@Autowired
 	UsuarioService userService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
     @PostMapping("/registro")
     public String registrarUsuario(@RequestBody RegisterRequest request) {
         // Aquí podrías guardar en base de datos, validar, enviar email, etc.
-        System.out.println("Nuevo registro:");
-        System.out.println("Nombre: " + request.getNombre());
-        System.out.println("Apellidos: " + request.getApellidos());
-        System.out.println("Identificador: " + request.getIdentificador());
-        System.out.println("Email: " + request.getEmail());
-        System.out.println("Teléfono: " + request.getTelefono());
-        System.out.println("Contraseña: " + request.getContraseña());
-
+        logger.info("Nuevo registro:");
+        logger.info("Nombre: " + request.getNombre());
+        logger.info("Apellidos: " + request.getApellidos());
+        logger.info("Identificador: " + request.getIdentificador());
+        logger.info("Email: " + request.getEmail());
+        logger.info("Teléfono: " + request.getTelefono());
+        
         try {
         	Usuario newUser = new Usuario();
         	newUser.setNombre(request.getNombre());
@@ -36,7 +43,10 @@ public class RegisterController {
         	newUser.setApellidos(request.getApellidos());
         	newUser.setCorreo(request.getEmail());
         	newUser.setNumeroTelefono(request.getTelefono());
-        	newUser.setContraseña(request.getContraseña());
+        
+        	String codificada = passwordEncoder.encode(request.getContraseña());
+        	
+        	newUser.setContraseña(codificada);
         	newUser.setTipoUsuario(TipoUsuario.comun_pendiente);
         	
         	this.userService.save(newUser);        	
