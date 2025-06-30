@@ -1,0 +1,21 @@
+.footer {
+  background: linear-gradient(to right, #d2ebcf, #e8f3e1);
+  text-align: center;
+  padding: 1rem 2rem;
+  font-size: 0.9rem;
+}
+
+.footer-icons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-icons img {
+  height: 32px;
+}
+
+.footer-text {
+  margin: 0;
+}

@@ -1,0 +1,22 @@
+.header {
+  background: linear-gradient(to right, #d2ebcf, #e8f3e1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  margin-left: 0.8rem;
+  font-size: 1.8rem;
+  color: #2c513f;
+}
+
+.icon {
+  height: 40px;
+}
