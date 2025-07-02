@@ -7,43 +7,49 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil;
+	private final JwtUtil jwtUtil;
 
-    public JwtAuthFilter(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
+	public JwtAuthFilter(JwtUtil jwtUtil) {
+		this.jwtUtil = jwtUtil;
+	}
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
 
-        String authHeader = request.getHeader("Authorization");
+		String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
+		if (authHeader != null && authHeader.startsWith("Bearer ")) {
+			String token = authHeader.substring(7);
 
-            if (jwtUtil.validateToken(token)) {
-                String identificador = jwtUtil.extractIdentificador(token);
+			if (jwtUtil.validateToken(token)) {
+				String identificador = jwtUtil.extractIdentificador(token);
+				String rol = jwtUtil.extractRol(token);
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(identificador, null, null);
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				// Convertimos el rol en una autoridad
+				List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(rol));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        }
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+						identificador, null, authorities);
+				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-        filterChain.doFilter(request, response);
-    }
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
+		}
+
+		filterChain.doFilter(request, response);
+	}
+
 }

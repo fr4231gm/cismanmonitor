@@ -30,7 +30,6 @@ function App() {
         {/* Rutas públicas con footer */}
         <Route path="/" element={<PublicLayout><Login /></PublicLayout>} />
         <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
-        <Route path="/reset-clave-maestra" element={<PublicLayout><ResetMasterPassword /></PublicLayout>} />
 
         {/* Rutas protegidas con header y footer */}
         <Route path="/menu" element={<ProtectedRoute><Layout><MainMenu /></Layout></ProtectedRoute>} />
@@ -43,10 +42,11 @@ function App() {
         <Route path="/detalle-horas" element={<ProtectedRoute><Layout><HourlyDetail /></Layout></ProtectedRoute>} />
         <Route path="/notificaciones" element={<ProtectedRoute><Layout><NotificationSettings /></Layout></ProtectedRoute>} />
         <Route path="/nueva-notificacion" element={<ProtectedRoute><Layout><NotificationForm /></Layout></ProtectedRoute>} />
-        <Route path="/config-admin" element={<ProtectedRoute><Layout><AdminSettings /></Layout></ProtectedRoute>} />
-        <Route path="/enviar-correo" element={<ProtectedRoute><Layout><EmailSender /></Layout></ProtectedRoute>} />
-        <Route path="/usuarios" element={<ProtectedRoute><Layout><UserManagement /></Layout></ProtectedRoute>} />
-        <Route path="/historial-usuarios" element={<ProtectedRoute><Layout><UserActionHistory /></Layout></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute><Layout><AdminSettings /></Layout></ProtectedRoute>} />
+        <Route path="/admin/enviar-correo" element={<ProtectedRoute><Layout><EmailSender /></Layout></ProtectedRoute>} />
+        <Route path="/admin/usuarios" element={<ProtectedRoute><Layout><UserManagement /></Layout></ProtectedRoute>} />
+        <Route path="/admin/historial-usuarios" element={<ProtectedRoute><Layout><UserActionHistory /></Layout></ProtectedRoute>} />
+        <Route path="/admin/reset-clave-maestra" element={<ProtectedRoute><ResetMasterPassword /></ProtectedRoute>} />
       </Routes>
     </Router>
   );

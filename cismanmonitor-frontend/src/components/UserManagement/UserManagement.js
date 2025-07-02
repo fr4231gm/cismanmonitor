@@ -1,37 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './UserManagement.css';
 
-const usuariosIniciales = [
-  { id: 'ml8923fl', nombre: 'María', apellidos: 'López Fernández', email: 'maria.lopez@example.com', telefono: '601234567', acceso: 'Otorgado' },
-  { id: 'cr5618rd', nombre: 'Carlos', apellidos: 'Rodríguez Díaz', email: 'carlos.rodriguez@example.com', telefono: '602345678', acceso: 'Pendiente' },
-  { id: 'ls7342sm', nombre: 'Laura', apellidos: 'Sánchez Martín', email: 'laura.sanchez@example.com', telefono: '603456789', acceso: 'Otorgado' },
-  { id: 'pf2109fr', nombre: 'Pedro', apellidos: 'Fernández Ruiz', email: 'pedro.fernandez@example.com', telefono: '604567890', acceso: 'Otorgado' },
-  { id: 'ag7854gt', nombre: 'Ana', apellidos: 'Gómez Torres', email: 'ana.gomez@example.com', telefono: '605678901', acceso: 'No vigente' },
-  { id: 'jj3647jc', nombre: 'José', apellidos: 'Jiménez Castro', email: 'jose.jimenez@example.com', telefono: '606789012', acceso: 'Pendiente' },
-  { id: 'mm5296mv', nombre: 'Marta', apellidos: 'Molina Vargas', email: 'marta.molina@example.com', telefono: '607890123', acceso: 'Pendiente' },
-  { id: 'lr6182rh', nombre: 'Luis', apellidos: 'Romero Herrera', email: 'luis.romero@example.com', telefono: '608901234', acceso: 'Pendiente' },
-  { id: 'en4532ns', nombre: 'Elena', apellidos: 'Navarro Sánchez', email: 'elena.navarro@example.com', telefono: '609012345', acceso: 'Pendiente' },
-];
-
 function UserManagement() {
-  const [usuarios, setUsuarios] = useState(usuariosIniciales);
-  const [editando, setEditando] = useState(null); // usuario en edición
+  const [usuarios, setUsuarios] = useState([]);
+  const [editando, setEditando] = useState(null);
   const [form, setForm] = useState({});
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem('token');
+
+  // Cargar usuarios al iniciar
+  useEffect(() => {
+    fetch('http://localhost:8080/api/admin/usuarios', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        const usuariosMapeados = data.map(u => ({
+          id: u.codigoUsuario,
+          nombre: u.nombre,
+          apellidos: u.apellidos,
+          email: u.correo,
+          telefono: u.numeroTelefono,
+          acceso: traducirTipoUsuario(u.tipoUsuario)
+        }));
+        setUsuarios(usuariosMapeados);
+      })
+      .catch(err => console.error('Error al cargar usuarios:', err));
+  }, [token]);
+
+  const traducirTipoUsuario = (tipo) => {
+    switch (tipo) {
+      case 'comun_autorizado': return 'Otorgado';
+      case 'comun_pendiente': return 'Pendiente';
+      case 'comun_baneado': return 'No vigente';
+      default: return tipo;
+    }
+  };
+
+  const accesoAEnum = (acceso) => {
+    switch (acceso) {
+      case 'Otorgado': return 'comun_autorizado';
+      case 'Pendiente': return 'comun_pendiente';
+      case 'No vigente': return 'comun_baneado';
+      default: return acceso;
+    }
+  };
 
   const cambiarAcceso = (id) => {
-    setUsuarios(usuarios.map(user => {
-      if (user.id !== id) return user;
-      const nuevoEstado =
-        user.acceso === 'Otorgado' ? 'No vigente'
-        : user.acceso === 'Pendiente' ? 'Otorgado'
-        : 'Otorgado';
-      return { ...user, acceso: nuevoEstado };
-    }));
+    fetch(`http://localhost:8080/api/admin/usuarios/${id}/acceso`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(res => res.json())
+      .then(usuarioActualizado => {
+        setUsuarios(usuarios.map(u =>
+          u.id === id
+            ? { ...u, acceso: traducirTipoUsuario(usuarioActualizado.tipoUsuario) }
+            : u
+        ));
+      })
+      .catch(err => console.error('Error al cambiar acceso:', err));
   };
 
   const eliminarUsuario = (id) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
-      setUsuarios(usuarios.filter(user => user.id !== id));
+      fetch(`http://localhost:8080/api/admin/usuarios/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(() => setUsuarios(usuarios.filter(u => u.id !== id)))
+        .catch(err => console.error('Error al eliminar usuario:', err));
     }
   };
 
@@ -46,8 +92,40 @@ function UserManagement() {
   };
 
   const guardarCambios = () => {
-    setUsuarios(usuarios.map(u => (u.id === form.id ? form : u)));
-    cerrarEditor();
+    const payload = {
+      codigoUsuario: form.id,
+      nombre: form.nombre,
+      apellidos: form.apellidos,
+      correo: form.email,
+      numeroTelefono: form.telefono,
+      tipoUsuario: accesoAEnum(form.acceso)
+    };
+
+    fetch(`http://localhost:8080/api/admin/usuarios/${form.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(res => res.json())
+      .then(usuarioActualizado => {
+        setUsuarios(usuarios.map(u =>
+          u.id === form.id
+            ? {
+                id: usuarioActualizado.codigoUsuario,
+                nombre: usuarioActualizado.nombre,
+                apellidos: usuarioActualizado.apellidos,
+                email: usuarioActualizado.correo,
+                telefono: usuarioActualizado.numeroTelefono,
+                acceso: traducirTipoUsuario(usuarioActualizado.tipoUsuario)
+              }
+            : u
+        ));
+        cerrarEditor();
+      })
+      .catch(err => console.error('Error al guardar cambios:', err));
   };
 
   return (
@@ -93,7 +171,7 @@ function UserManagement() {
       </table>
 
       <div className="volver">
-        <button onClick={() => alert('Volver al menú de administración')}>← Volver al menú de administración</button>
+        <button onClick={() => navigate('/admin')}>← Volver al menú de administración</button>
       </div>
 
       {editando && (

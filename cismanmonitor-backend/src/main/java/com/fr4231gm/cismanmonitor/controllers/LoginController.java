@@ -63,7 +63,7 @@ public class LoginController {
 						.body("Su usuario tiene prohibido el acceso al sistema");
 			}
 
-			String token = jwtUtil.generateToken(usuario.getCodigoUsuario());
+			String token = jwtUtil.generateToken(usuario.getCodigoUsuario(), usuario.getTipoUsuario().toString());
 
 			return ResponseEntity.ok(Map.of("token", token));
 		} catch (Exception e) {

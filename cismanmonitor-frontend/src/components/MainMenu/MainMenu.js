@@ -31,7 +31,7 @@ function MainMenu() {
     const payload = parseJwt(token);
     if (payload) {
       setUsuario(payload.sub); // el identificador va como 'sub' por convención JWT
-      setEsAdmin(payload.rol === 'admin'); // si añades rol en el token, opcional
+      setEsAdmin(payload.rol === 'administrador'); // si añades rol en el token, opcional
     }
   }, [navigate]);
 
@@ -83,7 +83,7 @@ function MainMenu() {
 
       {esAdmin && (
         <div className="admin-button-wrapper">
-          <button className="admin-button" onClick={() => alert('Ir a Configuración de administración')}>
+          <button className="admin-button" onClick={() => navigate('/admin')}>
             Configuración de administración
           </button>
         </div>

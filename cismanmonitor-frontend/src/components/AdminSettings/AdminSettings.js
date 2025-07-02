@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AdminSettings.css';
 
 function AdminSettings() {
   const usuario = 'Francisco';
+  const navigate = useNavigate();
+
 
   return (
     <div className="admin-wrapper">
@@ -15,7 +18,7 @@ function AdminSettings() {
       </div>
 
       <div className="admin-content">
-        <div className="admin-box" onClick={() => alert('Ir a administración de usuarios')}>
+        <div className="admin-box" onClick={() => navigate('/admin/usuarios')}>
           <h4>Administración de usuarios</h4>
           <p>Accede a la lista de usuarios para editarlos, darlos de baja o otorgar nuevos accesos</p>
         </div>
@@ -37,7 +40,7 @@ function AdminSettings() {
       </div>
 
       <div className="volver">
-        <button onClick={() => alert('Volver al menú')}>← Volver al menú</button>
+        <button onClick={() => navigate('/menu')}>← Volver al menú</button>
       </div>
     </div>
   );

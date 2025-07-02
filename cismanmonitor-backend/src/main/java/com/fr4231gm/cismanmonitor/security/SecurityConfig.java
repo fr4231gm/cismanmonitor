@@ -32,6 +32,7 @@ public class SecurityConfig {
             .cors().and().csrf().disable()
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/login", "/api/registro", "/api/resetPassword").permitAll()
+                .requestMatchers("/admin/**").hasAuthority("administrador") // ← solo admin puede acceder
                 .anyRequest().authenticated()
             )
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
